@@ -11,7 +11,9 @@ import SwiftUI
 struct SkyApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            NavigationStack {
+                AppContainer.shared.resolve(HomeView.self)
+            }
         }
     }
 }

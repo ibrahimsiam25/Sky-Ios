@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		159B9FC52FCB331E00B2DDC2 /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = 159B9FC42FCB331E00B2DDC2 /* Swinject */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		15904EED2FC8731700CDE671 /* Sky.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sky.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				159B9FC52FCB331E00B2DDC2 /* Swinject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = Sky;
 			packageProductDependencies = (
+				159B9FC42FCB331E00B2DDC2 /* Swinject */,
 			);
 			productName = Sky;
 			productReference = 15904EED2FC8731700CDE671 /* Sky.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = 15904EE42FC8731600CDE671;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				159B9FC32FCB331E00B2DDC2 /* XCRemoteSwiftPackageReference "Swinject" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 15904EEE2FC8731700CDE671 /* Products */;
 			projectDirPath = "";
@@ -328,6 +337,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		159B9FC32FCB331E00B2DDC2 /* XCRemoteSwiftPackageReference "Swinject" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Swinject/Swinject.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.10.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		159B9FC42FCB331E00B2DDC2 /* Swinject */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 159B9FC32FCB331E00B2DDC2 /* XCRemoteSwiftPackageReference "Swinject" */;
+			productName = Swinject;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 15904EE52FC8731600CDE671 /* Project object */;
 }
