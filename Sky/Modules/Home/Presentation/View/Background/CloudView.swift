@@ -48,7 +48,7 @@ struct SingleCloud: View {
             .blur(radius: isFog ? 12 : 2)
             .position(x: startX, y: startY)
             .onAppear {
-                // Distribute clouds randomly across the screen width on launch
+
                 startX = CGFloat.random(in: -200...width)
                 
                 if isFog {

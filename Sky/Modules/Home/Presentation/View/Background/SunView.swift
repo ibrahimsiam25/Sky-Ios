@@ -17,10 +17,10 @@ struct SunView: View {
             ZStack {
                 if isNight {
                     // Starry night field
-                    ForEach(0..<25, id: \.self) { index in
+                    ForEach(0..<25, id: \.self) { _ in
                         StarView(
-                            x: CGFloat.random(in: 20...geometry.size.width - 20),
-                            y: CGFloat.random(in: 20...geometry.size.height / 2.5)
+                            x: randomStarX(in: geometry.size),
+                            y: randomStarY(in: geometry.size)
                         )
                     }
                     
@@ -82,6 +82,24 @@ struct SunView: View {
                 }
             }
         }
+    }
+
+    private func randomStarX(in size: CGSize) -> CGFloat {
+        guard size.width > 40 else {
+            return max(size.width / 2, 0)
+        }
+
+        return CGFloat.random(in: 20...(size.width - 20))
+    }
+
+    private func randomStarY(in size: CGSize) -> CGFloat {
+        let upperBound = size.height / 2.5
+
+        guard upperBound > 20 else {
+            return max(upperBound / 2, 0)
+        }
+
+        return CGFloat.random(in: 20...upperBound)
     }
 }
 
