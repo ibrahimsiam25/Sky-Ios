@@ -10,6 +10,7 @@ import Foundation
 struct WeatherResponseDTO: Codable {
     let location: LocationDTO
     let current: CurrentDTO
+    let forecast: ForecastDTO
 }
 
 struct LocationDTO: Codable {
@@ -43,6 +44,28 @@ struct ConditionDTO: Codable {
     let code: Int
 }
 
+struct ForecastDTO: Codable {
+    let forecastday: [ForecastDayDTO]
+}
+
+struct ForecastDayDTO: Codable {
+    let date: String
+    let day: DayDTO
+    let hour: [HourDTO]
+}
+
+struct DayDTO: Codable {
+    let maxtempC: Double
+    let mintempC: Double
+    let condition: ConditionDTO
+}
+
+struct HourDTO: Codable {
+    let time: String
+    let tempC: Double
+    let condition: ConditionDTO
+}
+
 extension WeatherResponseDTO {
     func toWeatherEntity() -> WeatherEntity {
         WeatherEntity(
@@ -60,7 +83,40 @@ extension WeatherResponseDTO {
             windDirection: current.windDir,
             isDay: current.isDay == 1,
             localtime: location.localtime,
-            chanceOfRain: current.chanceOfRain ?? 0
+            chanceOfRain: current.chanceOfRain ?? 0,
+            forecastDays: forecast.forecastday.enumerated().map { index, item in
+                ForecastDayEntity(
+                    title: dayTitle(for: index),
+                    date: item.date,
+                    minTemp: item.day.mintempC,
+                    maxTemp: item.day.maxtempC,
+                    conditionText: item.day.condition.text,
+                    conditionCode: item.day.condition.code,
+                    hours: item.hour.map {
+                        HourWeatherEntity(
+                            time: timeOnly(from: $0.time),
+                            temperature: $0.tempC,
+                            conditionText: $0.condition.text,
+                            conditionCode: $0.condition.code
+                        )
+                    }
+                )
+            }
         )
+    }
+
+    private func dayTitle(for index: Int) -> String {
+        switch index {
+        case 0:
+            return "Today"
+        case 1:
+            return "Tomorrow"
+        default:
+            return "After Tomorrow"
+        }
+    }
+
+    private func timeOnly(from value: String) -> String {
+        String(value.suffix(5))
     }
 }

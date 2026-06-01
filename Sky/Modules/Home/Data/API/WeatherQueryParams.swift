@@ -9,7 +9,7 @@ struct CurrentWeatherParams: QueryParamsProtocol {
     let lat: Double
     let lon: Double
 
-    
+    private let days = "3"
     private let lang = "en"
     private let aqi = "no"
 
@@ -17,6 +17,7 @@ struct CurrentWeatherParams: QueryParamsProtocol {
         [
             "key": key,
             "q": "\(lat),\(lon)",
+            "days": days,
             "lang": lang,
             "aqi": aqi
         ]

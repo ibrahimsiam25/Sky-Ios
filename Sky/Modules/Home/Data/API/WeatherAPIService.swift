@@ -11,6 +11,7 @@ import Foundation
 
 class WeatherAPIService: WeatherAPIServiceProtocol {
     private let client: NetworkClientProtocol
+    private let forecastEndpoint = "forecast.json"
    
 
     init(client: NetworkClientProtocol) {
@@ -19,6 +20,9 @@ class WeatherAPIService: WeatherAPIServiceProtocol {
     
     func fetchCurrentWeather(lat: Double, lon: Double) async throws -> WeatherResponseDTO {
         let params = CurrentWeatherParams(lat: lat, lon: lon)
-        return try await client.request(params: params.asDictionary)
+        return try await client.request(
+            endpoint: forecastEndpoint,
+            params: params.asDictionary
+        )
     }
 }

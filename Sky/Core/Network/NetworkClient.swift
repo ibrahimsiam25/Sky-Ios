@@ -11,7 +11,7 @@ final class NetworkClient: NetworkClientProtocol {
     private let session: URLSession
     private let interceptor: NetworkInterceptor
     private let decoder: JSONDecoder
-    private let baseURL = "https://api.weatherapi.com/v1/current.json"
+    private let baseURL = "https://api.weatherapi.com/v1/"
     init(
         session: URLSession,
         interceptor: NetworkInterceptor,
@@ -23,9 +23,10 @@ final class NetworkClient: NetworkClientProtocol {
     }
 
     func request<T: Decodable>(
+        endpoint: String,
         params: [String: String]
     ) async throws -> T {
-        let url = try buildURL(baseURL: baseURL, params: params)
+        let url = try buildURL(endpoint: endpoint, params: params)
         interceptor.logRequest(url: url)
 
         do {
@@ -58,8 +59,8 @@ final class NetworkClient: NetworkClientProtocol {
         }
     }
 
-    private func buildURL(baseURL: String, params: [String: String]) throws -> URL {
-        guard var components = URLComponents(string: baseURL) else {
+    private func buildURL(endpoint: String, params: [String: String]) throws -> URL {
+        guard var components = URLComponents(string: baseURL + endpoint) else {
             throw NetworkError.invalidURL
         }
         components.queryItems = params.map { URLQueryItem(name: $0.key, value: $0.value) }

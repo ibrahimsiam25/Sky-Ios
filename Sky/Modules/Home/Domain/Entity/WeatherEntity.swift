@@ -24,10 +24,30 @@ struct WeatherEntity {
     let isDay: Bool
     let localtime: String
     let chanceOfRain: Int
+    let forecastDays: [ForecastDayEntity]
 
     var animationType: WeatherAnimationType {
         WeatherAnimationType.from(code: conditionCode, isDay: isDay)
     }
+}
+
+struct ForecastDayEntity: Identifiable {
+    let id = UUID()
+    let title: String
+    let date: String
+    let minTemp: Double
+    let maxTemp: Double
+    let conditionText: String
+    let conditionCode: Int
+    let hours: [HourWeatherEntity]
+}
+
+struct HourWeatherEntity: Identifiable {
+    let id = UUID()
+    let time: String
+    let temperature: Double
+    let conditionText: String
+    let conditionCode: Int
 }
 
 enum WeatherAnimationType {
