@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct HomeView: View {
     @StateObject private var presenter: HomePresenter
@@ -33,6 +34,46 @@ struct HomeView: View {
                     }
                 }
                 .onAppear { animateIn = true }
+
+            } else if presenter.needsLocationPermission {
+                VStack(spacing: 16) {
+                    Image(systemName: "location.slash")
+                        .font(.system(size: 64))
+                        .foregroundColor(.white)
+
+                    Text("Location Required")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+
+                    Text(presenter.errorMessage ?? "Please allow location access to show your weather.")
+                        .font(.body)
+                        .foregroundColor(.white.opacity(0.8))
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 32)
+
+                    HStack(spacing: 12) {
+                        Button(action: openSettings) {
+                            Text("Open Settings")
+                                .fontWeight(.semibold)
+                                .foregroundColor(.blue)
+                                .padding(.horizontal, 20)
+                                .padding(.vertical, 12)
+                                .background(Color.white)
+                                .cornerRadius(8)
+                        }
+
+                        Button(action: { Task { await presenter.loadWeather() } }) {
+                            Text("Retry")
+                                .fontWeight(.semibold)
+                                .foregroundColor(.white)
+                                .padding(.horizontal, 20)
+                                .padding(.vertical, 12)
+                                .background(Color.white.opacity(0.2))
+                                .cornerRadius(8)
+                        }
+                    }
+                }
 
             } else if let errorMsg = presenter.errorMessage {
                
@@ -62,5 +103,10 @@ struct HomeView: View {
         .navigationBarHidden(true)
         .fullScreenCover(isPresented: $showSearchView) { SearchView() }
         .task { await presenter.loadWeather() }
+    }
+
+    private func openSettings() {
+        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+        UIApplication.shared.open(url)
     }
 }

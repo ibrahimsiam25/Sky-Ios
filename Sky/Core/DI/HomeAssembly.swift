@@ -14,6 +14,7 @@ class HomeAssembly: Assembly {
     func assemble(container: Container) {
 
         // 1 API Service
+
         container.register(WeatherAPIServiceProtocol.self) { r in
             WeatherAPIService(client: r.resolve(NetworkClientProtocol.self)!)
         }.inObjectScope(.container)
@@ -29,8 +30,15 @@ class HomeAssembly: Assembly {
         }.inObjectScope(.container)
 
         // 4 Presenter
+        container.register(LocationService.self) { _ in
+            LocationService()
+        }.inObjectScope(.container)
+
         container.register(HomePresenter.self) { r in
-            HomePresenter(getCurrentWeatherUseCase: r.resolve(GetCurrentWeatherUseCaseProtocol.self)!)
+            HomePresenter(
+                getCurrentWeatherUseCase: r.resolve(GetCurrentWeatherUseCaseProtocol.self)!,
+                locationService: r.resolve(LocationService.self)!
+            )
         }.inObjectScope(.transient)
 
         // 5 HomeView

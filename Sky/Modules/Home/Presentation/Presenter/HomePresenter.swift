@@ -8,19 +8,26 @@
 import Foundation
 import SwiftUI
 import Combine
+import CoreLocation
 
 @MainActor
 final class HomePresenter: ObservableObject {
     private let getCurrentWeatherUseCase: GetCurrentWeatherUseCaseProtocol
+    private let locationService: LocationService
 
     @Published var weather: WeatherEntity?
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
+    @Published var needsLocationPermission: Bool = false
     @Published var currentAnimation: WeatherAnimationType = .sunny
     @Published var isDaytime: Bool = true
 
-    init(getCurrentWeatherUseCase: GetCurrentWeatherUseCaseProtocol) {
+    init(
+        getCurrentWeatherUseCase: GetCurrentWeatherUseCaseProtocol,
+        locationService: LocationService
+    ) {
         self.getCurrentWeatherUseCase = getCurrentWeatherUseCase
+        self.locationService = locationService
         updateDaytime()
     }
 
@@ -30,10 +37,19 @@ final class HomePresenter: ObservableObject {
         defer { isLoading = false }
 
         do {
-            let result = try await getCurrentWeatherUseCase.execute(lat: 30.0444, lon: 31.2357)
+            let coordinate = try await locationService.currentCoordinate()
+            let result = try await getCurrentWeatherUseCase.execute(
+                lat: coordinate.latitude,
+                lon: coordinate.longitude
+            )
             self.weather = result
             self.currentAnimation = result.animationType
             self.isDaytime = result.isDay
+            self.needsLocationPermission = false
+        } catch LocationServiceError.denied {
+            self.weather = nil
+            self.needsLocationPermission = true
+            self.errorMessage = LocationServiceError.denied.errorDescription
         } catch {
             self.errorMessage = error.localizedDescription
         }
