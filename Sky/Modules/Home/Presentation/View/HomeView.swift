@@ -9,33 +9,33 @@ import SwiftUI
 import UIKit
 
 struct HomeView: View {
-    @StateObject private var presenter: HomePresenter
+    @StateObject private var viewModel: HomeViewModel
     @State private var animateIn = false
     @State private var showSearchView = false
 
-    init(presenter: HomePresenter) {
-        _presenter = StateObject(wrappedValue: presenter)
+    init(viewModel: HomeViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
     }
 
     var body: some View {
         ZStack {
-            WeatherBackgroundView(animation: presenter.currentAnimation)
+            WeatherBackgroundView(animation: viewModel.currentAnimation)
                 .ignoresSafeArea()
 
-            if let weather = presenter.weather {
+            if let weather = viewModel.weather {
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(spacing: 24) {
-                        NavBarView(textColor: presenter.currentAnimation.textColor) {
+                        NavBarView(textColor: viewModel.currentAnimation.textColor) {
                             showSearchView = true
                         }
-                        WeatherTopSection(weather: weather, presenter: presenter, animateIn: animateIn)
-                        ForecastCard(presenter: presenter)
-                        WeatherStatsGrid(presenter: presenter)
+                        WeatherTopSection(weather: weather, viewModel: viewModel, animateIn: animateIn)
+                        ForecastCard(viewModel: viewModel)
+                        WeatherStatsGrid(viewModel: viewModel)
                     }
                 }
                 .onAppear { animateIn = true }
 
-            } else if presenter.needsLocationPermission {
+            } else if viewModel.needsLocationPermission {
                 VStack(spacing: 16) {
                     Image(systemName: "location.slash")
                         .font(.system(size: 64))
@@ -46,7 +46,7 @@ struct HomeView: View {
                         .fontWeight(.bold)
                         .foregroundColor(.white)
 
-                    Text(presenter.errorMessage ?? "Please allow location access to show your weather.")
+                    Text(viewModel.errorMessage ?? "Please allow location access to show your weather.")
                         .font(.body)
                         .foregroundColor(.white.opacity(0.8))
                         .multilineTextAlignment(.center)
@@ -63,7 +63,7 @@ struct HomeView: View {
                                 .cornerRadius(8)
                         }
 
-                        Button(action: { Task { await presenter.loadWeather() } }) {
+                        Button(action: { Task { await viewModel.loadWeather() } }) {
                             Text("Retry")
                                 .fontWeight(.semibold)
                                 .foregroundColor(.white)
@@ -75,13 +75,13 @@ struct HomeView: View {
                     }
                 }
 
-            } else if let errorMsg = presenter.errorMessage {
+            } else if let errorMsg = viewModel.errorMessage {
                
                 VStack(spacing: 16) {
                     Image(systemName: "wifi.slash").font(.system(size: 64)).foregroundColor(.white)
                     Text("Something Went Wrong").font(.title2).fontWeight(.bold).foregroundColor(.white)
                     Text(errorMsg).font(.body).foregroundColor(.white.opacity(0.8)).multilineTextAlignment(.center).padding(.horizontal, 32)
-                    Button(action: { Task { await presenter.loadWeather() } }) {
+                    Button(action: { Task { await viewModel.loadWeather() } }) {
                         Text("Retry").fontWeight(.semibold).foregroundColor(.blue)
                             .padding(.horizontal, 24).padding(.vertical, 12)
                             .background(Color.white).cornerRadius(8)
@@ -89,7 +89,7 @@ struct HomeView: View {
                 }
             }
 
-            if presenter.isLoading {
+            if viewModel.isLoading {
                 ZStack {
                     Color.black.opacity(0.3).ignoresSafeArea()
                     VStack(spacing: 12) {
@@ -102,7 +102,7 @@ struct HomeView: View {
         }
         .navigationBarHidden(true)
         .fullScreenCover(isPresented: $showSearchView) { SearchView() }
-        .task { await presenter.loadWeather() }
+        .task { await viewModel.loadWeather() }
     }
 
     private func openSettings() {

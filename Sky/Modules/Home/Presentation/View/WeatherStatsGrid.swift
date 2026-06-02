@@ -8,17 +8,17 @@
 import SwiftUI
 
 struct WeatherStatsGrid: View {
-    let presenter: HomePresenter
+    let viewModel: HomeViewModel
 
     var body: some View {
         VStack(spacing: 12) {
             HStack(spacing: 12) {
-                StatCard(icon: "eye.fill", title: "Visibility", value: presenter.visibilityText, textColor: presenter.currentAnimation.textColor)
-                StatCard(icon: "drop.fill", title: "Humidity", value: presenter.humidityText, textColor: presenter.currentAnimation.textColor)
+                StatCard(icon: "eye.fill", title: "Visibility", value: viewModel.visibilityText, textColor: viewModel.currentAnimation.textColor)
+                StatCard(icon: "drop.fill", title: "Humidity", value: viewModel.humidityText, textColor: viewModel.currentAnimation.textColor)
             }
             HStack(spacing: 12) {
-                StatCard(icon: "thermometer", title: "Feels Like", value: presenter.feelsLikeText, textColor: presenter.currentAnimation.textColor)
-                StatCard(icon: "gauge.with.needle", title: "Pressure", value: presenter.pressureText, textColor: presenter.currentAnimation.textColor)
+                StatCard(icon: "thermometer", title: "Feels Like", value: viewModel.feelsLikeText, textColor: viewModel.currentAnimation.textColor)
+                StatCard(icon: "gauge.with.needle", title: "Pressure", value: viewModel.pressureText, textColor: viewModel.currentAnimation.textColor)
             }
         }
         .padding(.horizontal, 16)

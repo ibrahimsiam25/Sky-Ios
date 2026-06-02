@@ -34,8 +34,8 @@ class HomeAssembly: Assembly {
             LocationService()
         }.inObjectScope(.container)
 
-        container.register(HomePresenter.self) { r in
-            HomePresenter(
+        container.register(HomeViewModel.self) { r in
+            HomeViewModel(
                 getCurrentWeatherUseCase: r.resolve(GetCurrentWeatherUseCaseProtocol.self)!,
                 locationService: r.resolve(LocationService.self)!
             )
@@ -43,7 +43,7 @@ class HomeAssembly: Assembly {
 
         // 5 HomeView
         container.register(HomeView.self) { r in
-            HomeView(presenter:  r.resolve(HomePresenter.self)!)
+            HomeView(viewModel:  r.resolve(HomeViewModel.self)!)
         }.inObjectScope(.transient)
     }
 }

@@ -8,21 +8,21 @@
 import SwiftUI
 
 struct ForecastCard: View {
-    let presenter: HomePresenter
+    let viewModel: HomeViewModel
     @State private var selectedDay: ForecastDayEntity?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("3-DAY FORECAST")
                 .font(.system(size: 12, weight: .bold))
-                .foregroundColor(presenter.currentAnimation.textColor.opacity(0.6))
+                .foregroundColor(viewModel.currentAnimation.textColor.opacity(0.6))
                 .padding(.horizontal, 16)
                 .padding(.top, 12)
 
             Divider()
-                .background(presenter.currentAnimation.textColor.opacity(0.3))
+                .background(viewModel.currentAnimation.textColor.opacity(0.3))
 
-            ForEach(presenter.weather?.forecastDays ?? []) { day in
+            ForEach(viewModel.weather?.forecastDays ?? []) { day in
                 Button {
                     selectedDay = day
                 } label: {
@@ -44,7 +44,7 @@ struct ForecastCard: View {
                             .font(.headline)
                             .frame(width: 80, alignment: .trailing)
                     }
-                    .foregroundColor(presenter.currentAnimation.textColor)
+                    .foregroundColor(viewModel.currentAnimation.textColor)
                     .padding(.horizontal, 16)
                     .padding(.vertical, 8)
                 }
