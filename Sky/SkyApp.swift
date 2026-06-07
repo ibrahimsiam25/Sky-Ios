@@ -6,14 +6,18 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct SkyApp: App {
     var body: some Scene {
         WindowGroup {
-            NavigationStack {
-                AppContainer.shared.resolve(HomeView.self)
-            }
+            let container = AppContainer.shared
+            HomeCarouselContainerView(
+                viewModel: container.resolveHomeViewModel(),
+                container: container
+            )
+            .modelContainer(AppContainer.shared.resolveModelContext().container)
         }
     }
 }

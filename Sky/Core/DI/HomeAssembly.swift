@@ -43,7 +43,7 @@ class HomeAssembly: Assembly {
 
         // 5 HomeView
         container.register(HomeView.self) { r in
-            HomeView(viewModel:  r.resolve(HomeViewModel.self)!)
+            HomeView(viewModel: r.resolve(HomeViewModel.self)!, )
         }.inObjectScope(.transient)
     }
 }
