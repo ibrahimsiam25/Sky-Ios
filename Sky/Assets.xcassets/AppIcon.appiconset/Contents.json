@@ -1,6 +1,7 @@
 {
   "images" : [
     {
+      "filename" : "Code_Generated_Image.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -12,6 +13,7 @@
           "value" : "dark"
         }
       ],
+      "filename" : "Code_Generated_Image 1.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
@@ -23,6 +25,7 @@
           "value" : "tinted"
         }
       ],
+      "filename" : "Code_Generated_Image 2.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
