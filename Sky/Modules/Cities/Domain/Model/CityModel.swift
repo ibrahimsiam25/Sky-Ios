@@ -16,7 +16,7 @@ struct CityModel: Identifiable, Equatable {
     let addedAt: Date
 }
 
-// Map from SwiftData entity
+
 extension CityModel {
     init(entity: CityEntity) {
         self.id = entity.id
