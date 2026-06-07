@@ -11,17 +11,9 @@ import SwiftData
 final class CitiesAssembly: Assembly {
     func assemble(container: Container) {
 
-        // SwiftData ModelContext — singleton
-        container.register(ModelContext.self) { _ in
-            let schema = Schema([CityEntity.self])
-            let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-            let container = try! ModelContainer(for: schema, configurations: [config])
-            return ModelContext(container)
-        }.inObjectScope(.container)
-
         // Repository
-        container.register(CitiesRepositoryProtocol.self) { r in
-            CitiesRepositoryImpl(context: r.resolve(ModelContext.self)!)
+        container.register(CitiesRepositoryProtocol.self) { _ in
+            CitiesRepositoryImpl(context: DatabaseManager.shared.context)
         }
 
         // Use Cases

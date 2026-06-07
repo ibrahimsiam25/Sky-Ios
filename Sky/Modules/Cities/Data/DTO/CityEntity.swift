@@ -9,7 +9,7 @@ import SwiftData
 import Foundation
 
 @Model
-final class CityEntity {
+final class CityDTO {
     @Attribute(.unique) var id: UUID
     var name: String
     var country: String

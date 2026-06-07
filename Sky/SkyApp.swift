@@ -13,9 +13,9 @@ struct SkyApp: App {
     var body: some Scene {
         WindowGroup {
             HomeCarouselContainerView(
-                viewModel: AppContainer.shared.resolveHomeViewModel()
+                viewModel: AppContainer.shared.resolve(HomeViewModel.self)
             )
-            .modelContainer(AppContainer.shared.resolveModelContext().container)
+            .modelContainer(DatabaseManager.shared.container)
         }
     }
 }

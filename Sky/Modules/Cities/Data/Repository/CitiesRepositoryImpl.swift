@@ -17,7 +17,7 @@ final class CitiesRepositoryImpl: CitiesRepositoryProtocol {
     }
 
     func getSavedCities() throws -> [CityModel] {
-        let descriptor = FetchDescriptor<CityEntity>(
+        let descriptor = FetchDescriptor<CityDTO >(
             sortBy: [SortDescriptor(\.addedAt, order: .forward)]
         )
         let entities = try context.fetch(descriptor)
@@ -25,12 +25,12 @@ final class CitiesRepositoryImpl: CitiesRepositoryProtocol {
     }
 
     func saveCity(_ city: CityModel) throws {
-        let descriptor = FetchDescriptor<CityEntity>()
+        let descriptor = FetchDescriptor<CityDTO >()
         let existing = try context.fetch(descriptor)
         guard !existing.contains(where: { $0.name == city.name && $0.country == city.country }) else {
             return
         }
-        let entity = CityEntity(
+        let entity = CityDTO (
             name: city.name,
             country: city.country,
             lat: city.lat,
@@ -41,7 +41,7 @@ final class CitiesRepositoryImpl: CitiesRepositoryProtocol {
     }
 
     func deleteCity(id: UUID) throws {
-        let descriptor = FetchDescriptor<CityEntity>()
+        let descriptor = FetchDescriptor<CityDTO >()
         let entities = try context.fetch(descriptor)
         if let entity = entities.first(where: { $0.id == id }) {
             context.delete(entity)

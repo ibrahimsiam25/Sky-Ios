@@ -18,7 +18,7 @@ struct CityModel: Identifiable, Equatable {
 
 
 extension CityModel {
-    init(entity: CityEntity) {
+    init(entity: CityDTO ) {
         self.id = entity.id
         self.name = entity.name
         self.country = entity.country

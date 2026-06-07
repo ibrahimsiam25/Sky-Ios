@@ -15,7 +15,7 @@ struct HomeCarouselContainerView: View {
     @State private var pageAnimations: [Int: WeatherAnimationType] = [0: .sunny]
     @State private var showCitiesList = false
 
-    @Query(sort: \CityEntity.addedAt) private var savedCityEntities: [CityEntity]
+    @Query(sort: \CityDTO .addedAt) private var savedCityEntities: [CityDTO ]
     init(viewModel: HomeViewModel) {
         _gpsViewModel = StateObject(wrappedValue: viewModel)
     }
@@ -41,7 +41,12 @@ struct HomeCarouselContainerView: View {
 
                 ForEach(Array(savedCities.enumerated()), id: \.element.id) { index, city in
                     let pageIndex = index + 1
-                    let vm = AppContainer.shared.resolveHomeViewModel(lat: city.lat, lon: city.lon)
+                    let vm = HomeViewModel(
+                        getCurrentWeatherUseCase: AppContainer.shared.resolve(GetCurrentWeatherUseCaseProtocol.self),
+                        locationService: AppContainer.shared.resolve(LocationService.self),
+                        lat: city.lat,
+                        lon: city.lon
+                    )
                     HomeView(viewModel: vm, onAnimationChange: { anim in
                         pageAnimations[pageIndex] = anim
                     })
@@ -89,7 +94,11 @@ struct HomeCarouselContainerView: View {
             lon: 0,
             addedAt: Date()
         )
-        let vm = AppContainer.shared.resolveCitiesListViewModel(currentCity: currentCity)
+        let vm = CitiesListViewModel(
+            currentCity: currentCity,
+            getSavedCities: AppContainer.shared.resolve(GetSavedCitiesUseCaseProtocol.self),
+            deleteCity: AppContainer.shared.resolve(DeleteCityUseCaseProtocol.self)
+        )
         return CitiesListView(viewModel: vm)
     }
 }

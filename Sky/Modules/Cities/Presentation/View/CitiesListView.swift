@@ -68,7 +68,7 @@ struct CitiesListView: View {
             }
             .navigationDestination(isPresented: $showSearch) {
                 CitySearchView(
-                    viewModel: AppContainer.shared.resolveCitySearchViewModel(),
+                    viewModel: AppContainer.shared.resolve(CitySearchViewModel.self),
                     onCityAdded: {
                         viewModel.loadCities()
                     }

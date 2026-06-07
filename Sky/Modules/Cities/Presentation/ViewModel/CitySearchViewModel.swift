@@ -12,6 +12,7 @@ import Combine
 final class CitySearchViewModel: ObservableObject {
 
     private let saveCity: SaveCityUseCaseProtocol
+    private let localCitiesService: LocalCitiesServiceProtocol
 
     @Published var searchText: String = ""
     @Published var successMessage: String?
@@ -19,12 +20,15 @@ final class CitySearchViewModel: ObservableObject {
 
     var onCityAdded: (() -> Void)?
 
-    init(saveCity: SaveCityUseCaseProtocol) {
+    init(saveCity: SaveCityUseCaseProtocol, localCitiesService: LocalCitiesServiceProtocol) {
         self.saveCity = saveCity
+        self.localCitiesService = localCitiesService
     }
+
     var filteredCities: [LocalCity] {
-        if searchText.isEmpty { return LocalCitiesData.all }
-        return LocalCitiesData.all.filter {
+        let allCities = localCitiesService.getLocalCities()
+        if searchText.isEmpty { return allCities }
+        return allCities.filter {
             $0.name.localizedCaseInsensitiveContains(searchText) ||
             $0.country.localizedCaseInsensitiveContains(searchText)
         }
