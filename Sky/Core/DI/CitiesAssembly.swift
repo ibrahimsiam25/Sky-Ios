@@ -27,9 +27,17 @@ final class CitiesAssembly: Assembly {
             DeleteCityUseCase(repository: r.resolve(CitiesRepositoryProtocol.self)!)
         }
 
+        // Local Cities Service
+        container.register(LocalCitiesServiceProtocol.self) { _ in
+            LocalCitiesService()
+        }.inObjectScope(.container)
+
         // Search ViewModel
         container.register(CitySearchViewModel.self) { r in
-            CitySearchViewModel(saveCity: r.resolve(SaveCityUseCaseProtocol.self)!)
+            CitySearchViewModel(
+                saveCity: r.resolve(SaveCityUseCaseProtocol.self)!,
+                localCitiesService: r.resolve(LocalCitiesServiceProtocol.self)!
+            )
         }
     }
 }
