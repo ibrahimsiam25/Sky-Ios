@@ -15,6 +15,9 @@ final class HomeViewModel: ObservableObject {
     private let getCurrentWeatherUseCase: GetCurrentWeatherUseCaseProtocol
     private let locationService: LocationService
 
+    let staticLat: Double?
+    let staticLon: Double?
+
     @Published var weather: WeatherEntity?
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
@@ -24,11 +27,20 @@ final class HomeViewModel: ObservableObject {
 
     init(
         getCurrentWeatherUseCase: GetCurrentWeatherUseCaseProtocol,
-        locationService: LocationService
+        locationService: LocationService,
+        lat: Double? = nil,
+        lon: Double? = nil
     ) {
         self.getCurrentWeatherUseCase = getCurrentWeatherUseCase
         self.locationService = locationService
+        self.staticLat = lat
+        self.staticLon = lon
         updateDaytime()
+    }
+
+    func loadWeatherIfNeeded() async {
+        guard weather == nil, !isLoading else { return }
+        await loadWeather()
     }
 
     func loadWeather() async {
@@ -37,19 +49,32 @@ final class HomeViewModel: ObservableObject {
         defer { isLoading = false }
 
         do {
-            let coordinate = try await locationService.currentCoordinate()
+            let latToUse: Double
+            let lonToUse: Double
+
+            if let lat = staticLat, let lon = staticLon {
+                latToUse = lat
+                lonToUse = lon
+            } else {
+                let coordinate = try await locationService.currentCoordinate()
+                latToUse = coordinate.latitude
+                lonToUse = coordinate.longitude
+            }
+
             let result = try await getCurrentWeatherUseCase.execute(
-                lat: coordinate.latitude,
-                lon: coordinate.longitude
+                lat: latToUse,
+                lon: lonToUse
             )
             self.weather = result
             self.currentAnimation = result.animationType
             self.isDaytime = result.isDay
             self.needsLocationPermission = false
         } catch LocationServiceError.denied {
-            self.weather = nil
-            self.needsLocationPermission = true
-            self.errorMessage = LocationServiceError.denied.errorDescription
+            if staticLat == nil {
+                self.weather = nil
+                self.needsLocationPermission = true
+                self.errorMessage = LocationServiceError.denied.errorDescription
+            }
         } catch {
             self.errorMessage = error.localizedDescription
         }
