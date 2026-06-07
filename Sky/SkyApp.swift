@@ -12,10 +12,8 @@ import SwiftData
 struct SkyApp: App {
     var body: some Scene {
         WindowGroup {
-            let container = AppContainer.shared
             HomeCarouselContainerView(
-                viewModel: container.resolveHomeViewModel(),
-                container: container
+                viewModel: AppContainer.shared.resolveHomeViewModel()
             )
             .modelContainer(AppContainer.shared.resolveModelContext().container)
         }
