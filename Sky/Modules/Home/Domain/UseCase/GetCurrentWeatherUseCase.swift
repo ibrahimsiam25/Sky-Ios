@@ -15,6 +15,6 @@ final class GetCurrentWeatherUseCase: GetCurrentWeatherUseCaseProtocol {
     }
     
     func execute(lat: Double, lon: Double) async throws -> WeatherEntity {
-        try await repository.getCurrentWeather(lat: lat, lon: lon).toWeatherEntity()
+        try await repository.getCurrentWeather(lat: lat, lon: lon)
     }
 }

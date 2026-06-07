@@ -14,8 +14,8 @@ class WeatherRepositoryImpl: WeatherRepositoryProtocol {
         self.apiService = apiService
     }
     
-    func getCurrentWeather(lat: Double, lon: Double) async throws -> WeatherResponseDTO {
+    func getCurrentWeather(lat: Double, lon: Double) async throws -> WeatherEntity {
         let dto = try await apiService.fetchCurrentWeather(lat: lat, lon: lon)
-        return dto
+        return dto.toWeatherEntity()
     }
 }
