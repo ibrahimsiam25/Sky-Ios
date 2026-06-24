@@ -17,21 +17,21 @@ struct CitySearchRowView: View {
             HStack(spacing: 14) {
                 Image(systemName: "mappin.circle.fill")
                     .font(.system(size: 20))
-                    .foregroundColor(.white.opacity(0.5))
+                    .foregroundColor(.secondary)
 
                 VStack(alignment: .leading, spacing: 3) {
                     Text(city.name)
                         .font(.system(size: 15, weight: .semibold))
-                        .foregroundColor(.white)
+                        .foregroundColor(.primary)
                     Text(city.country)
                         .font(.system(size: 12))
-                        .foregroundColor(.white.opacity(0.5))
+                        .foregroundColor(.secondary)
                 }
 
                 Spacer()
 
                 Image(systemName: "plus.circle")
-                    .foregroundColor(.primaryApp)
+                    .foregroundColor(.blue)
                     .font(.system(size: 20))
             }
             .padding(.vertical, 8)

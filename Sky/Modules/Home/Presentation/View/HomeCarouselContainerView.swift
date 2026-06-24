@@ -16,6 +16,7 @@ struct HomeCarouselContainerView: View {
     @State private var showCitiesList = false
 
     @Query(sort: \CityDTO .addedAt) private var savedCityEntities: [CityDTO ]
+    
     init(viewModel: HomeViewModel) {
         _gpsViewModel = StateObject(wrappedValue: viewModel)
     }

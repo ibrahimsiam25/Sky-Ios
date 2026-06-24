@@ -9,9 +9,6 @@ import AVFoundation
 import UIKit
 import SwiftUI
 
-import AVFoundation
-import SwiftUI
-import AVFoundation
 
 struct LoopedVideoPlayerView: UIViewRepresentable {
     let videoName: String

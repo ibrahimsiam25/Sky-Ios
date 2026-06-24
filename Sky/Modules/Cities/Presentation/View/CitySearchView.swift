@@ -20,41 +20,32 @@ struct CitySearchView: View {
     }
 
     var body: some View {
-        ZStack {
-            Color.backgroundApp.ignoresSafeArea()
-
-            VStack(spacing: 0) {
-            
-                HStack {
-                    Image(systemName: "magnifyingglass")
-                        .foregroundColor(.white.opacity(0.5))
-                    TextField("Search city...", text: $viewModel.searchText)
-                        .foregroundColor(.white)
-                        .autocorrectionDisabled()
-                }
-                .padding(12)
-                .background(.white.opacity(0.08))
-                .cornerRadius(12)
-                .padding(.horizontal, 16)
-                .padding(.vertical, 12)
-
-          
-                List(viewModel.filteredCities) { city in
-                    CitySearchRowView(city: city) {
-                        viewModel.addCity(city)
-                        onCityAdded()
-                        dismiss()
-                    }
-                    .listRowBackground(Color.white.opacity(0.05))
-                    .listRowSeparatorTint(.white.opacity(0.1))
-                }
-                .listStyle(.plain)
-                .scrollContentBackground(.hidden)
+        VStack(spacing: 0) {
+        
+            HStack {
+                Image(systemName: "magnifyingglass")
+                    .foregroundColor(.secondary)
+                TextField("Search city...", text: $viewModel.searchText)
+                    .autocorrectionDisabled()
             }
+            .padding(12)
+            .background(Color(uiColor: .systemGray6))
+            .cornerRadius(12)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
+
+      
+            List(viewModel.filteredCities) { city in
+                CitySearchRowView(city: city) {
+                    viewModel.addCity(city)
+                    onCityAdded()
+                    dismiss()
+                }
+            }
+            .listStyle(.plain)
         }
         .navigationTitle("Add City")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarColorScheme(.dark, for: .navigationBar)
         .overlay(alignment: .bottom) {
             if let msg = viewModel.successMessage {
                 Text(msg)

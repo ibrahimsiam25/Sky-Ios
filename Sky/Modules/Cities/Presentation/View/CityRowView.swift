@@ -17,16 +17,16 @@ struct CityRowView: View {
 
             Image(systemName: isLocked ? "location.fill" : "mappin.circle.fill")
                 .font(.system(size: 22))
-                .foregroundColor(isLocked ? .primaryApp : .white.opacity(0.6))
+                .foregroundColor(isLocked ? .blue : .secondary)
                 .frame(width: 32)
 
             VStack(alignment: .leading, spacing: 3) {
                 Text(city.name)
                     .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(.white)
+                    .foregroundColor(.primary)
                 Text(city.country)
                     .font(.system(size: 13))
-                    .foregroundColor(.white.opacity(0.55))
+                    .foregroundColor(.secondary)
             }
 
             Spacer()
@@ -34,10 +34,10 @@ struct CityRowView: View {
             if isLocked {
                 Text("Current")
                     .font(.system(size: 11, weight: .medium))
-                    .foregroundColor(.primaryApp)
+                    .foregroundColor(.blue)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 4)
-                    .background(Color.primaryApp.opacity(0.15))
+                    .background(Color.blue.opacity(0.15))
                     .cornerRadius(20)
             }
         }
